@@ -38,7 +38,7 @@ function* userSignupActionSaga(action: {
 function* userLoginActionSaga(action: {
     type: string;
     payload: {
-         email: '', password: '',
+         email: '', password: '',handleLoginAction: () => void
     }
 }): any {
     try {
@@ -53,6 +53,7 @@ function* userLoginActionSaga(action: {
         if (response.status === 'ok') {
             yield put(userLoginSuccessAction(response.user));
             localStorage.setItem("userData", JSON.stringify(response.user));
+            action.payload.handleLoginAction();
         } else {
             yield put(userLoginFailureAction(response.message))
         }

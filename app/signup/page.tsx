@@ -54,6 +54,7 @@ export default function Signup() {
     const handleSignup = () => {
         const valid = isValid()
         if (!valid) return;
+        setCredentials({name:'',email:'',password:'',confrmPassword:''})
         dispatch(userSignupAction({
             name: credentials.name,
             email: credentials.email, password: credentials.password
@@ -82,6 +83,7 @@ export default function Signup() {
                 <TextField
                     id="outlined-text-input"
                     label="Name"
+                    value={credentials.name}
                     error={!!span.nameSpan}
                     helperText={span.nameSpan}
                     onClick={() => { setSpan({ ...span, nameSpan: '' }) }}
@@ -90,6 +92,7 @@ export default function Signup() {
                 <TextField
                     id="outlined-text-input"
                     label="Email"
+                    value={credentials.email}
                     error={!!span.emailSpan}
                     helperText={span.emailSpan}
                     onClick={() => { setSpan({ ...span, emailSpan: '' }) }}
@@ -98,6 +101,7 @@ export default function Signup() {
                 <TextField
                     id="outlined-password-input"
                     label="Password"
+                    value={credentials.password}
                     type={passwordVisible ? "text" : "password"}
                     onClick={() => { setSpan({ ...span, passwordSpan: '' }) }}
                     onChange={(e) => { setCredentials({ ...credentials, password: e.target.value }) }}
@@ -117,6 +121,7 @@ export default function Signup() {
                 <TextField
                     id="outlined-password-input"
                     label="Confirm Password"
+                    value={credentials.confrmPassword}
                     type={confrnPasswordVisible ? "text" : "password"}
                     onClick={() => { setSpan({ ...span, confrmPassword: '' }) }}
                     onChange={(e) => { setCredentials({ ...credentials, confrmPassword: e.target.value }) }}

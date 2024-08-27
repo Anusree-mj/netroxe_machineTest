@@ -2,25 +2,36 @@
 'use client'
 
 import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { useDispatch, useSelector } from "react-redux";
+import { userLoginAction, userStateType } from "@/store/userAuthReducer";
+import { toast } from "react-toastify";
 
 export default function Home() {
-  const router = useRouter()
-  const [credentials, setCredentials] = useState({ userName: '', password: '' })
-  const [span, setSpan] = useState({ userNameSpan: '', passwordSpan: '' })
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const [credentials, setCredentials] = useState({ email: '', password: '' })
+  const [span, setSpan] = useState({ emailSpan: '', passwordSpan: '' })
   const [mainSpan, setMainSpan] = useState('')
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const error = useSelector((state: { user: userStateType }) => state.user.error);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error)
+    }
+  }, [error])
 
   const isValid = () => {
     let validity = true
-    if (credentials.userName === '') {
+    if (credentials.email === ''||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(credentials.email)) {
       validity = false;
       setSpan(prevState => ({
         ...prevState,
-        userNameSpan: 'Invalid username'
+        emailSpan: 'Invalid email'
       }))
     }
     if (credentials.password === '') {
@@ -37,19 +48,21 @@ export default function Home() {
     setMainSpan('')
     const valid = isValid()
     if (!valid) return;
-    // if (name !== credentials.name || password !== credentials.password) {
-    //   setMainSpan("Invalid username or password")
-    //   return;
-    // } else {
-    //   route.push('/home')
-    // }
+    dispatch(userLoginAction({
+      email: credentials.email, password: credentials.password,
+      handleLoginAction
+    }))
+    setCredentials({ email: '', password: '' })
+  }
+  const handleLoginAction = () => {
+    router.push('/dashboard')
   }
   return (
     <Box sx={{
       flexDirection: 'column',
       display: 'flex', justifyContent: 'center', alignItems: 'center',
       minHeight: '100vh',
-      background: 'linear-gradient(to right, #3d3f42, #212226)', // Lighter to darker gradient
+      background: 'linear-gradient(to right, #3d3f42, #212226)',
     }}>
       <Typography sx={{
         textAlign: 'center', fontSize: '1rem',
@@ -65,16 +78,18 @@ export default function Home() {
       }}>
         <TextField
           id="outlined-text-input"
-          label="User Name"
-          error={!!span.userNameSpan}
-          helperText={span.userNameSpan}
-          onClick={() => { setSpan({ ...span, userNameSpan: '' }) }}
-          onChange={(e) => { setCredentials({ ...credentials, userName: e.target.value }) }}
+          label="Email"
+          value={credentials.email}
+          error={!!span.emailSpan}
+          helperText={span.emailSpan}
+          onClick={() => { setSpan({ ...span, emailSpan: '' }) }}
+          onChange={(e) => { setCredentials({ ...credentials, email: e.target.value }) }}
         ></TextField>
-        
+
         <TextField
           id="outlined-password-input"
           label="Password"
+          value={credentials.password}
           type={passwordVisible ? "text" : "password"}
           onClick={() => { setSpan({ ...span, passwordSpan: '' }) }}
           onChange={(e) => { setCredentials({ ...credentials, password: e.target.value }) }}
