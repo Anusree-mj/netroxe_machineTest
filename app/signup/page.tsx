@@ -1,7 +1,7 @@
 
 'use client'
 
-import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
+import { Box, IconButton, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -9,15 +9,24 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useDispatch, useSelector } from "react-redux";
 import { userSignupAction, userStateType } from "@/store/userAuthReducer";
 import { toast } from "react-toastify";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 export default function Signup() {
-    const route = useRouter()
+    const router = useRouter()
     const dispatch = useDispatch();
     const [credentials, setCredentials] = useState({ name: '', email: '', password: '', confrmPassword: '' })
     const [span, setSpan] = useState({ nameSpan: '', emailSpan: '', passwordSpan: '', confrmPassword: '' })
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [confrnPasswordVisible, setconfrnPasswordVisible] = useState(false)
     const error = useSelector((state: { user: userStateType }) => state.user.error);
+    const isLoading = useSelector((state: { user: userStateType }) => state.user.isLoading);
+
+    useEffect(() => {
+        const userData = localStorage.getItem('userData');
+        if (userData) {
+            router.push('/dashboard')
+        }
+    }, []);
 
     useEffect(() => {
         if (error) {
@@ -54,7 +63,7 @@ export default function Signup() {
     const handleSignup = () => {
         const valid = isValid()
         if (!valid) return;
-        setCredentials({name:'',email:'',password:'',confrmPassword:''})
+        setCredentials({ name: '', email: '', password: '', confrmPassword: '' })
         dispatch(userSignupAction({
             name: credentials.name,
             email: credentials.email, password: credentials.password
@@ -141,13 +150,16 @@ export default function Signup() {
                 <Typography sx={{
                     color: 'white', cursor: 'pointer', textAlign: 'center', fontSize: '0.9rem',
                     textDecoration: 'underline', fontWeight: '600'
-                }} onClick={() => { route.push('/') }}
+                }} onClick={() => { router.push('/') }}
                 >
                     Already LoggedIn? Login
                 </Typography>
-                <Button variant="contained" onClick={handleSignup} sx={{
-                    mt: 2,
-                }}>Create Account</Button>
+                <LoadingButton
+                    loading={isLoading}
+                    loadingPosition="end"
+                    variant="contained" onClick={handleSignup} sx={{
+                        mt: 2,
+                    }}>Create Account</LoadingButton>
             </Box>
         </Box>
     );

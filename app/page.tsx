@@ -1,7 +1,7 @@
 
 'use client'
 
-import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
+import { Box, IconButton, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -9,6 +9,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useDispatch, useSelector } from "react-redux";
 import { userLoginAction, userStateType } from "@/store/userAuthReducer";
 import { toast } from "react-toastify";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 export default function Home() {
   const router = useRouter();
@@ -18,6 +19,14 @@ export default function Home() {
   const [mainSpan, setMainSpan] = useState('')
   const [passwordVisible, setPasswordVisible] = useState(false);
   const error = useSelector((state: { user: userStateType }) => state.user.error);
+  const isLoading = useSelector((state: { user: userStateType }) => state.user.isLoading);
+
+  useEffect(() => {
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      router.push('/dashboard')
+    }
+  }, []);
 
   useEffect(() => {
     if (error) {
@@ -27,7 +36,7 @@ export default function Home() {
 
   const isValid = () => {
     let validity = true
-    if (credentials.email === ''||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(credentials.email)) {
+    if (credentials.email === '' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(credentials.email)) {
       validity = false;
       setSpan(prevState => ({
         ...prevState,
@@ -113,9 +122,12 @@ export default function Home() {
         }} onClick={() => { router.push('/signup') }} >
           New to netroxe? Create Account
         </Typography>
-        <Button variant="contained" onClick={handleLogin} sx={{
-          mt: 2,
-        }}>Login</Button>
+        <LoadingButton
+          loading={isLoading}
+          loadingPosition="end"
+          variant="contained" onClick={handleLogin} sx={{
+            mt: 2,
+          }}>Login</LoadingButton>
       </Box>
     </Box>
   );
