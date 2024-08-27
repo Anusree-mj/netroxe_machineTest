@@ -2,17 +2,28 @@
 'use client'
 
 import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { useDispatch, useSelector } from "react-redux";
+import { userSignupAction, userStateType } from "@/store/userAuthReducer";
+import { toast } from "react-toastify";
 
 export default function Signup() {
     const route = useRouter()
-    const [credentials, setCredentials] = useState({ email: '', password: '', confrmPassword: '' })
-    const [span, setSpan] = useState({ emailSpan: '', passwordSpan: '', confrmPassword: '' })
+    const dispatch = useDispatch();
+    const [credentials, setCredentials] = useState({ name: '', email: '', password: '', confrmPassword: '' })
+    const [span, setSpan] = useState({ nameSpan: '', emailSpan: '', passwordSpan: '', confrmPassword: '' })
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [confrnPasswordVisible, setconfrnPasswordVisible] = useState(false)
+    const error = useSelector((state: { user: userStateType }) => state.user.error);
+
+    useEffect(() => {
+        if (error) {
+            toast.error(error)
+        }
+    }, [error])
 
     const isValid = () => {
         let validity = true
@@ -23,7 +34,7 @@ export default function Signup() {
                 emailSpan: 'Invalid email'
             }))
         }
-        if (credentials.password === '' || credentials.password.length < 9) {
+        if (credentials.password === '' || credentials.password.length < 8) {
             setSpan(prevState => ({
                 ...prevState,
                 passwordSpan: 'Provide a password of at least 8 characters'
@@ -43,7 +54,10 @@ export default function Signup() {
     const handleSignup = () => {
         const valid = isValid()
         if (!valid) return;
-
+        dispatch(userSignupAction({
+            name: credentials.name,
+            email: credentials.email, password: credentials.password
+        }))
     }
 
     return (
@@ -65,6 +79,14 @@ export default function Signup() {
                 boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
                 background: 'linear-gradient(to right, #f792f0,#cf46c8)',
             }}>
+                <TextField
+                    id="outlined-text-input"
+                    label="Name"
+                    error={!!span.nameSpan}
+                    helperText={span.nameSpan}
+                    onClick={() => { setSpan({ ...span, nameSpan: '' }) }}
+                    onChange={(e) => { setCredentials({ ...credentials, name: e.target.value }) }}
+                ></TextField>
                 <TextField
                     id="outlined-text-input"
                     label="Email"
@@ -114,7 +136,7 @@ export default function Signup() {
                 <Typography sx={{
                     color: 'white', cursor: 'pointer', textAlign: 'center', fontSize: '0.9rem',
                     textDecoration: 'underline', fontWeight: '600'
-                }}onClick={()=>{route.push('/')}}
+                }} onClick={() => { route.push('/') }}
                 >
                     Already LoggedIn? Login
                 </Typography>

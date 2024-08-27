@@ -1,50 +1,70 @@
 import { takeEvery, put, call } from 'redux-saga/effects';
 import {
-    getUserDetailsAction, getUserDetailsFailureAction, getUserDetailsSuccessAction,
-    getProductDetailsAction, getProductDetailsFailureAction, getProductDetailsSuccessAction,
-
-} from '@/store/userReducer/userReducer';
+    userSignupAction, userSignupSuccessAction, userSignupFailureAction,
+    userLoginAction, userLoginFailureAction, userLoginSuccessAction
+} from '@/store/userAuthReducer';
 
 import { apiCall } from '@/services/api';
 
-// get user details 
-function* getUserDetailsActionSaga(): any {
+// user signup
+function* userSignupActionSaga(action: {
+    type: string;
+    payload: {
+        name: '', email: '', password: '',
+    }
+}): any {
     try {
+        console.log('reached saga')
         const response = yield call<any>(apiCall, {
-            method: 'GET',
-            endpoint: 'user',
+            method: 'POST',
+            endpoint: 'signup',
+            body: action.payload
+
         });
 
         if (response.status === 'ok') {
-            yield put(getUserDetailsSuccessAction({ user: response.user, totalCartItem: response.totalCartItem }));
+            console.log(response.user, 'founddeeeeeeeeeeeee')
+            yield put(userSignupSuccessAction(response.user));
             localStorage.setItem("userData", JSON.stringify(response.user));
         } else {
-            yield put(getUserDetailsFailureAction(response.message))
+            yield put(userSignupFailureAction(response.message))
         }
     } catch (err) {
-        yield put(getUserDetailsFailureAction(err))
+        yield put(userSignupFailureAction(err))
     }
 }
 
-// get product details
-function* getProductDetailsActionSaga(): any {
+// user login
+function* userLoginActionSaga(action: {
+    type: string;
+    payload: {
+         email: '', password: '',
+    }
+}): any {
     try {
+        console.log('reached saga')
         const response = yield call<any>(apiCall, {
-            method: 'GET',
-            endpoint: 'products',
+            method: 'POST',
+            endpoint: 'login',
+            body: action.payload
+
         });
 
         if (response.status === 'ok') {
-            yield put(getProductDetailsSuccessAction(response.products))
+            yield put(userLoginSuccessAction(response.user));
+            localStorage.setItem("userData", JSON.stringify(response.user));
         } else {
-            yield put(getProductDetailsFailureAction(response.message))
+            yield put(userLoginFailureAction(response.message))
         }
     } catch (err) {
-        yield put(getProductDetailsFailureAction(err))
+        yield put(userLoginFailureAction(err))
     }
 }
 
+
+
 export function* userAuthWatcher() {
-    yield takeEvery(getUserDetailsAction, getUserDetailsActionSaga);
-    yield takeEvery(getProductDetailsAction, getProductDetailsActionSaga);
+    yield takeEvery(userSignupAction, userSignupActionSaga);
+    yield takeEvery(userLoginAction, userLoginActionSaga);
+
 }
