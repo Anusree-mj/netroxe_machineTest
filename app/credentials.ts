@@ -1,0 +1,1 @@
+export const credentials = { name: 'anu@gmail.com', password: '123456' }

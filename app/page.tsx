@@ -1,95 +1,93 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+
+'use client'
+
+import { Box, Button, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import { credentials } from './credentials';
+import { useRouter } from "next/navigation";
+
 
 export default function Home() {
+  const route = useRouter()
+  const [name, setName] = useState('')
+  const [password, setPassword] = useState('')
+  const [nameSpan, setNameSpan] = useState('')
+  const [passwordSpan, setPasswordSpan] = useState('')
+  const [mainSpan, setMainSpan] = useState('')
+  const isValid = () => {
+    let validity = true
+    if (name === '') {
+      setNameSpan("Invalid name")
+      validity = false;
+    }
+    if (password === '') {
+      setPasswordSpan("Invalid password")
+      validity = false;
+    }
+    return validity
+  }
+
+  const handleLogin = () => {
+    setMainSpan('')
+    const valid = isValid()
+    if (!valid) return;
+    if (name !== credentials.name || password !== credentials.password) {
+      setMainSpan("Invalid username or password")
+      return;
+    } else {
+      route.push('/home')
+    }
+  }
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <Box sx={{
+      border: '1px solid red', flexDirection: 'column',
+      display: 'flex', justifyContent: 'center', alignItems: 'center',
+      minHeight: '100vh', backgroundColor: '#b3b7ebeb'
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+    }}>
+      <Typography sx={{
+        textAlign: 'center', fontSize: '1rem',
+        fontWeight: '800', mb: 2, color: '#c30226'
+      }}>
+        Login
+      </Typography>
+      <Box sx={{
+        display: 'flex', flexDirection: 'column', width: '30rem',
+        gap: 2, p: 3, maxWidth: '90%',
+        boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+        backgroundColor: 'white'
+      }}>
+        <span style={{ color: 'red', fontSize: '0.9rem', textAlign: 'center' }} >{mainSpan}</span>
+        <TextField
+          id="outlined-text-input"
+          label="User Name"
+          onClick={() => { setNameSpan('') }}
+          onChange={(e) => { setName(e.target.value) }}
+        ></TextField>
+        <span style={{ color: 'red', fontSize: '0.7rem' }} >{nameSpan}</span>
+        <TextField
+          id="outlined-password-input"
+          label="Password"
+          type="password"
+          onClick={() => { setPasswordSpan('') }}
+          onChange={(e) => { setPassword(e.target.value) }}
         />
-      </div>
+        <span style={{ color: 'red', fontSize: '0.7rem' }}>{passwordSpan}</span>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+        <Typography sx={{
+          color: 'blue', textAlign: 'center', fontSize: '0.9rem',
+          textDecoration: 'underline'
+        }}>
+          Forgot Password
+        </Typography>
+        <Typography sx={{
+          color: 'blue', textAlign: 'center', fontSize: '0.9rem',
+          textDecoration: 'underline'
+        }}>
+          New to netroxe? SignUp
+        </Typography>
+        <Button variant="contained" onClick={handleLogin} sx={{ mt: 2 }}>Login</Button>
+      </Box>
+    </Box>
   );
 }
