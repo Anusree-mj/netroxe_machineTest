@@ -95,6 +95,7 @@ export default function Signup() {
                     value={credentials.name}
                     error={!!span.nameSpan}
                     helperText={span.nameSpan}
+                    sx={{backgroundColor:'white',borderRadius:'0.3rem',width:'20rem'}}
                     onClick={() => { setSpan({ ...span, nameSpan: '' }) }}
                     onChange={(e) => { setCredentials({ ...credentials, name: e.target.value }) }}
                 ></TextField>
@@ -104,6 +105,7 @@ export default function Signup() {
                     value={credentials.email}
                     error={!!span.emailSpan}
                     helperText={span.emailSpan}
+                    sx={{backgroundColor:'white',borderRadius:'0.3rem',width:'20rem'}}
                     onClick={() => { setSpan({ ...span, emailSpan: '' }) }}
                     onChange={(e) => { setCredentials({ ...credentials, email: e.target.value }) }}
                 ></TextField>
@@ -112,6 +114,7 @@ export default function Signup() {
                     label="Password"
                     value={credentials.password}
                     type={passwordVisible ? "text" : "password"}
+                    sx={{backgroundColor:'white',borderRadius:'0.3rem',width:'20rem'}}
                     onClick={() => { setSpan({ ...span, passwordSpan: '' }) }}
                     onChange={(e) => { setCredentials({ ...credentials, password: e.target.value }) }}
                     error={!!span.passwordSpan}
@@ -132,6 +135,7 @@ export default function Signup() {
                     label="Confirm Password"
                     value={credentials.confrmPassword}
                     type={confrnPasswordVisible ? "text" : "password"}
+                    sx={{backgroundColor:'white',borderRadius:'0.3rem',width:'20rem'}}
                     onClick={() => { setSpan({ ...span, confrmPassword: '' }) }}
                     onChange={(e) => { setCredentials({ ...credentials, confrmPassword: e.target.value }) }}
                     error={!!span.confrmPassword}

@@ -36,7 +36,7 @@ export async function POST(req: Request) {
             path: '/',
         }));
 
-        return NextResponse.json({ status: 'ok', message: 'Login successful', user: { email: user.email } }, { headers });
+        return NextResponse.json({ status: 'ok', message: 'Login successful', user: {name:user.userName,_id:user._id, email: user.email } }, { headers });
     } catch (error) {
         console.error(error);
         return NextResponse.json({ status: 'nok', message: error }, { status: 500 });

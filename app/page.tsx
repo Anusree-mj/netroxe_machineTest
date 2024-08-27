@@ -91,6 +91,7 @@ export default function Home() {
           value={credentials.email}
           error={!!span.emailSpan}
           helperText={span.emailSpan}
+          sx={{backgroundColor:'white',borderRadius:'0.3rem',width:'20rem'}}
           onClick={() => { setSpan({ ...span, emailSpan: '' }) }}
           onChange={(e) => { setCredentials({ ...credentials, email: e.target.value }) }}
         ></TextField>
@@ -104,6 +105,7 @@ export default function Home() {
           onChange={(e) => { setCredentials({ ...credentials, password: e.target.value }) }}
           error={!!span.passwordSpan}
           helperText={span.passwordSpan}
+          sx={{backgroundColor:'white',borderRadius:'0.3rem',width:'20rem'}}
           InputProps={{
             endAdornment: (
               <IconButton
