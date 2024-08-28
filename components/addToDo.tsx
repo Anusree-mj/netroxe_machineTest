@@ -5,7 +5,7 @@ import { useState, useContext, useEffect } from "react"
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import { UserContext } from "@/helpers/userContext";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodoAction, todoStateType } from "@/store/toDoReducer";
+import { addTodoAction, getTodoAction, todoStateType } from "@/store/toDoReducer";
 import { toast } from "react-toastify";
 
 const AddToDo = () => {
@@ -48,16 +48,21 @@ const AddToDo = () => {
     const handleAdd = () => {
         let valid = isValid();
         if (!valid) return;
-        dispatch(addTodoAction({ userId, task: toDo.task, description: toDo.description }))
+        dispatch(addTodoAction({ userId, task: toDo.task, description: toDo.description,handleToDoAdd }))
         setTodo({ task: '', description: '' })
+    }
+
+    const handleToDoAdd = () => {
+        dispatch(getTodoAction({ userId }))
     }
 
     return (
         <Box sx={{
-            width: '60rem', maxWidth: { xs: '95%', md: '70%' },
+            width: '100%',
             display: 'flex', mt: 1, p: 2,
             flexDirection: "column", justifyContent: 'flex-start',
             alignItem: 'center',
+            border: '1px solid red'
         }}>
             <Box sx={{
                 display: 'flex', gap: 2,

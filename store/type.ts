@@ -4,12 +4,16 @@ export interface UserItem {
     email: string;
     password: string;
 }
+export interface TodosItem {
+    task: string;
+    description: string;
+    isCompleted: boolean;
+}
 
 export interface ToDoItem {
     _id: string;
     userId: string;
-    task: string;
-    description: string;
-    isCompleted: boolean
+    todos: TodosItem[];
+    totalTodo: number
 }
 

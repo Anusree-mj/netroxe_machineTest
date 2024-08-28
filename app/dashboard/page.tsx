@@ -4,11 +4,11 @@ import { Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/header';
 import SideBar from '@/components/sideBar';
-import MainComponent from '@/components/mainComponent/mainComponent';
 import { UserProvider } from '@/helpers/userContext';
+import AddToDo from '@/components/addToDo';
+import TodoManagement from '@/components/todoManagement';
 
 const Page = () => {
-    const router = useRouter();
 
     return (
         <UserProvider>
@@ -18,15 +18,16 @@ const Page = () => {
                     sx={{
                         display: 'flex',
                         flexWrap: 'wrap-reverse',
-                        gap: 3,
-                        justifyContent: 'center',
-                        alignItems: 'flex-end',
+                        gap: 3, alignItems: 'flex-end',
                         maxWidth: '100%',
                         border: '1px solid grey',
                     }}
                 >
                     <SideBar />
-                    <MainComponent />
+                    <Box>
+                        <AddToDo />
+                        <TodoManagement />
+                    </Box>
                 </Box>
             </Box>
         </UserProvider>
