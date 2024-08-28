@@ -1,6 +1,6 @@
 'use client';
 
-import { Box } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/header';
 import SideBar from '@/components/sideBar';
@@ -9,7 +9,7 @@ import AddToDo from '@/components/addToDo';
 import TodoManagement from '@/components/todoManagement';
 
 const Page = () => {
-
+    const isSmallScreen = useMediaQuery('(max-width:600px)');
     return (
         <UserProvider>
             <Box sx={{ background: 'linear-gradient(to right, #3d3f42, #212226)' }}>
@@ -23,7 +23,7 @@ const Page = () => {
                     }}
                 >
                     <SideBar />
-                    <Box>
+                    <Box sx={{ width: isSmallScreen ? '100%' : 'auto' }}>
                         <AddToDo />
                         <TodoManagement />
                     </Box>

@@ -32,7 +32,7 @@ const SideBar = () => {
             background: 'linear-gradient(to right, #f792f0,#cf46c8)',
             width: { md: '20rem', xs: '40rem' }, maxWidth: { xs: '95%', md: '90%' },
             display: 'flex', flexDirection: 'column', p: 2,
-            minHeight: {md:'90vh',xs:'80vh'}
+            minHeight: { md: '90vh', xs: '80vh' }
         }}>
             <Box sx={{
                 display: 'flex', mb: 3,
