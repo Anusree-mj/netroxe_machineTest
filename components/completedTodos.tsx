@@ -1,9 +1,14 @@
-import React from 'react'
+import { TodosItem } from '@/store/type'
+import { Box, Checkbox, Typography } from '@mui/material'
+import Divider from '@mui/material/Divider';
 
-const completedTodos = ({completedTodos}) => {
-    return (
+interface CompletedTodosProps {
+    completedTodos: TodosItem[];
+}
+
+const CompletedTodos = ({ completedTodos }: CompletedTodosProps) => {    return (
         <>
-            {todoList[0]?.todos.map((item: TodosItem) => (
+            {completedTodos.map((item: TodosItem) => (
                 <Box sx={{ p: 1 }}>
                     <Divider sx={{ mb: 1, backgroundColor: '#ffffff87' }} />
                     <Box sx={{
@@ -15,9 +20,8 @@ const completedTodos = ({completedTodos}) => {
                             alignItem: 'center'
                         }}>
                             <Checkbox
-                                sx={{ color: 'white' }}
-                                checked={item.isCompleted}
-                                onClick={() => { handleComplete(item.task) }}
+                                sx={{ color: 'white' }} checked
+                                disabled
                             />
                             <Box sx={{
                                 display: 'flex',
@@ -26,12 +30,7 @@ const completedTodos = ({completedTodos}) => {
                                 <Typography sx={{ color: 'white' }}>{item.task}</Typography>
                                 <Typography sx={{ color: '#ffffff87' }}>{item.description}</Typography>
                             </Box>
-                        </Box>
-                        <Box sx={{ gap: 1, display: 'flex' }}>
-                            <CreateOutlinedIcon sx={{ color: '#ffffff87', cursor: 'pointer', width: '1.1rem' }} />
-                            <CloseOutlinedIcon onClick={() => { handleDelete(item.task) }}
-                                sx={{ color: '#ffffff87', width: '1.1rem', cursor: 'pointer' }} />
-                        </Box>
+                        </Box>                       
                     </Box>
                 </Box>
 
@@ -40,4 +39,4 @@ const completedTodos = ({completedTodos}) => {
     )
 }
 
-export default completedTodos
+export default CompletedTodos

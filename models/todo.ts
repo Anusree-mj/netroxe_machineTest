@@ -5,7 +5,7 @@ export interface ITodo {
     todos: Array<{
         task: string;
         description: string;
-        isCompleted: boolean;
+        isComplete: boolean;
     }>;
     totalTodo: number
 }

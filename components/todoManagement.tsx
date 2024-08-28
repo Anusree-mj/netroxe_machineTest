@@ -13,6 +13,8 @@ import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { apiCall } from "@/services/api";
 import { toast } from "react-toastify";
+import CompletedTodos from "./completedTodos";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const TodoManagement = () => {
     const userContext = useContext(UserContext);
@@ -30,6 +32,7 @@ const TodoManagement = () => {
             dispatch(getTodoAction({ userId }))
         }
     }, [userId])
+
 
     const handleDelete = async (task: string) => {
         try {
@@ -65,6 +68,10 @@ const TodoManagement = () => {
         }
     }
 
+    const completedTodos = todoList[0]?.todos.filter((item: TodosItem) =>
+        isCompletedList ? item.isComplete : true
+    ) || [];
+
     return (
         <Box sx={{
             background: 'linear-gradient(to right, #3d3f42, #212226)',
@@ -90,44 +97,57 @@ const TodoManagement = () => {
                         <Typography sx={{ color: '#ffffff87' }}>Today</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', gap: 1 }}>
-                        <FactCheckOutlinedIcon sx={{ color: '#ffffff87', }} />
+                    {isCompletedList ? (
+                            <ArrowBackIcon
+                                sx={{ color: '#ffffff87', cursor: 'pointer' }}
+                                onClick={() => { setIsCompletedList(false) }}
+                            />
+                        ) : (
+                            <FactCheckOutlinedIcon
+                                sx={{ color: '#ffffff87', cursor: 'pointer' }}
+                                onClick={() => { setIsCompletedList(true) }}
+                            />
+                        )}
                         <SettingsIcon sx={{ color: '#ffffff87' }} />
                         <ArrowDropDownIcon sx={{ color: '#ffffff87', }} />
                     </Box>
                 </Box>
-                {todoList[0]?.todos.map((item: TodosItem) => (
-                    <Box sx={{ p: 1 }}>
-                        <Divider sx={{ mb: 1, backgroundColor: '#ffffff87' }} />
-                        <Box sx={{
-                            display: 'flex', justifyContent: 'space-between',
-                            alignItems: 'center'
-                        }}>
+                {!isCompletedList?(
+                    <>
+                    {todoList[0]?.todos.map((item: TodosItem) => (
+                        <Box sx={{ p: 1 }}>
+                            <Divider sx={{ mb: 1, backgroundColor: '#ffffff87' }} />
                             <Box sx={{
-                                display: 'flex', gap: 1, justifyContent: 'center',
-                                alignItem: 'center'
+                                display: 'flex', justifyContent: 'space-between',
+                                alignItems: 'center'
                             }}>
-                                <Checkbox
-                                    sx={{ color: 'white' }}
-                                    checked={item.isCompleted}
-                                    onClick={() => { handleComplete(item.task) }}
-                                />
                                 <Box sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column'
+                                    display: 'flex', gap: 1, justifyContent: 'center',
+                                    alignItem: 'center'
                                 }}>
-                                    <Typography sx={{ color: 'white' }}>{item.task}</Typography>
-                                    <Typography sx={{ color: '#ffffff87' }}>{item.description}</Typography>
+                                    <Checkbox
+                                        sx={{ color: 'white' }}
+                                        checked={item.isComplete}
+                                        onClick={() => { handleComplete(item.task) }}
+                                    />
+                                    <Box sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                    }}>
+                                        <Typography sx={{ color: 'white' }}>{item.task}</Typography>
+                                        <Typography sx={{ color: '#ffffff87' }}>{item.description}</Typography>
+                                    </Box>
+                                </Box>
+                                <Box sx={{ gap: 1, display: 'flex' }}>
+                                    <CreateOutlinedIcon sx={{ color: '#ffffff87', cursor: 'pointer', width: '1.1rem' }} />
+                                    <CloseOutlinedIcon onClick={() => { handleDelete(item.task) }}
+                                        sx={{ color: '#ffffff87', width: '1.1rem', cursor: 'pointer' }} />
                                 </Box>
                             </Box>
-                            <Box sx={{ gap: 1, display: 'flex' }}>
-                                <CreateOutlinedIcon sx={{ color: '#ffffff87', cursor: 'pointer', width: '1.1rem' }} />
-                                <CloseOutlinedIcon onClick={() => { handleDelete(item.task) }}
-                                    sx={{ color: '#ffffff87', width: '1.1rem', cursor: 'pointer' }} />
-                            </Box>
                         </Box>
-                    </Box>
-
-                ))}
+                    ))}
+                    </>
+                ):<CompletedTodos completedTodos={completedTodos}/>}
             </Box>
         </Box >
     )

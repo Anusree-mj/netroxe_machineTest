@@ -7,7 +7,7 @@ export interface UserItem {
 export interface TodosItem {
     task: string;
     description: string;
-    isCompleted: boolean;
+    isComplete: boolean;
 }
 
 export interface ToDoItem {

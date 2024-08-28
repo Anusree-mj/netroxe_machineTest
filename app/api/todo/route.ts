@@ -13,7 +13,7 @@ export async function POST(req: Request) {
             todo.todos.push({
                 task,
                 description,
-                isCompleted: false
+                isComplete: false
             });
             todo.totalTodo += 1
         } else {
@@ -63,15 +63,15 @@ export async function PATCH(req: Request) {
     await connectToMongoDB();
     try {
         const { userId, task } = await req.json();
-        console.log('useriddddd', userId);
         
         const todo = await Todo.findOne({ userId: userId });
 
         if (todo) {
             const todoItem = todo.todos.find(item => item.task === task);
             if (todoItem) {
-                todoItem.isCompleted = !todoItem.isCompleted; 
+                todoItem.isComplete = !todoItem.isComplete; 
                 await todo.save(); 
+                console.log(todoItem,'todoitemmmmmmmmmmmm')
                 return NextResponse.json({ status: 'ok' });
             } else {
                 return NextResponse.json({ status: 'nok', message: 'Todo item not found' }, { status: 404 });
