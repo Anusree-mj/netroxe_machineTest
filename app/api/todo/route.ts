@@ -84,3 +84,32 @@ export async function PATCH(req: Request) {
         return NextResponse.json({ status: 'nok', message: 'Unexpected error occurred' }, { status: 500 });
     }
 }
+// edit todo
+export async function PUT(req: Request) {
+    await connectToMongoDB();
+    try {
+        const { taskId, task, description, userId } = await req.json();
+
+        const todo = await Todo.findOne({ userId});
+
+        if (todo) {
+            const todoItem = todo.todos.find(item => item.task === taskId);
+
+            if (todoItem) {
+                todoItem.task = task || todoItem.task;
+                todoItem.description = description || todoItem.description;
+
+                await todo.save(); 
+                console.log(todoItem, 'todoItem updated');
+                return NextResponse.json({ status: 'ok' });
+            } else {
+                return NextResponse.json({ status: 'nok', message: 'Todo item not found' }, { status: 404 });
+            }
+        } else {
+            return NextResponse.json({ status: 'nok', message: 'Todo document not found' }, { status: 404 });
+        }
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({ status: 'nok', message: 'Unexpected error occurred' }, { status: 500 });
+    }
+}

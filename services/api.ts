@@ -6,7 +6,6 @@ interface ApiOptions {
 
 export const apiCall = async ({ method, endpoint, body = {} }: ApiOptions) => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
-
     const res = await fetch(`${apiUrl}/${endpoint}`, {
         method: method,
         body: method !== 'GET' && body ? JSON.stringify(body) : undefined,
