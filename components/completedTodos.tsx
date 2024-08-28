@@ -6,10 +6,11 @@ interface CompletedTodosProps {
     completedTodos: TodosItem[];
 }
 
-const CompletedTodos = ({ completedTodos }: CompletedTodosProps) => {    return (
+const CompletedTodos = ({ completedTodos }: CompletedTodosProps) => {
+    return (
         <>
             {completedTodos.map((item: TodosItem) => (
-                <Box sx={{ p: 1 }}>
+                <Box sx={{ p: 1 }} key={item.task}>
                     <Divider sx={{ mb: 1, backgroundColor: '#ffffff87' }} />
                     <Box sx={{
                         display: 'flex', justifyContent: 'space-between',
@@ -30,7 +31,7 @@ const CompletedTodos = ({ completedTodos }: CompletedTodosProps) => {    return 
                                 <Typography sx={{ color: 'white' }}>{item.task}</Typography>
                                 <Typography sx={{ color: '#ffffff87' }}>{item.description}</Typography>
                             </Box>
-                        </Box>                       
+                        </Box>
                     </Box>
                 </Box>
 

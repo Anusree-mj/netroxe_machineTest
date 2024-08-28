@@ -20,7 +20,6 @@ const Page = () => {
                         flexWrap: 'wrap-reverse',
                         gap: 3, alignItems: 'flex-end',
                         maxWidth: '100%',
-                        border: '1px solid grey',
                     }}
                 >
                     <SideBar />

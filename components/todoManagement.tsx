@@ -105,7 +105,7 @@ const TodoManagement = () => {
     return (
         <Box sx={{
             background: 'linear-gradient(to right, #3d3f42, #212226)',
-            border: '1px solid red', borderRadius: '0.2rem', display: 'flex',
+             borderRadius: '0.2rem', display: 'flex',
             justifyContent: "center", alignItems: 'center', mt: 2
         }}>
             <Box sx={{

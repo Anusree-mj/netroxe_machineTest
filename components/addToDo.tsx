@@ -62,7 +62,6 @@ const AddToDo = () => {
             display: 'flex', mt: 1, p: 2,
             flexDirection: "column", justifyContent: 'flex-start',
             alignItem: 'center',
-            border: '1px solid red'
         }}>
             <Box sx={{
                 display: 'flex', gap: 2,
