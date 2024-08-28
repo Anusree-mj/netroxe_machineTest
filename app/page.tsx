@@ -93,7 +93,7 @@ export default function Home() {
           helperText={span.emailSpan}
           sx={{
             backgroundColor: 'white', borderRadius: '0.3rem',
-            width: '20rem', maxWidth: '100%'
+            width: '30rem', maxWidth: '100%'
           }}
           onClick={() => { setSpan({ ...span, emailSpan: '' }) }}
           onChange={(e) => { setCredentials({ ...credentials, email: e.target.value }) }}
@@ -110,7 +110,7 @@ export default function Home() {
           helperText={span.passwordSpan}
           sx={{
             backgroundColor: 'white', borderRadius: '0.3rem',
-            width: '20rem', maxWidth: '100%'
+            width: '30rem', maxWidth: '100%'
           }}
           InputProps={{
             endAdornment: (

@@ -97,7 +97,7 @@ export default function Signup() {
                     helperText={span.nameSpan}
                     sx={{
                         backgroundColor: 'white', borderRadius: '0.3rem',
-                        width: '20rem', maxWidth: '100%'
+                        width: '30rem', maxWidth: '100%'
                     }}
                     onClick={() => { setSpan({ ...span, nameSpan: '' }) }}
                     onChange={(e) => { setCredentials({ ...credentials, name: e.target.value }) }}
@@ -110,7 +110,7 @@ export default function Signup() {
                     helperText={span.emailSpan}
                     sx={{
                         backgroundColor: 'white', borderRadius: '0.3rem',
-                        width: '20rem', maxWidth: '100%'
+                        width: '30rem', maxWidth: '100%'
                     }}
                     onClick={() => { setSpan({ ...span, emailSpan: '' }) }}
                     onChange={(e) => { setCredentials({ ...credentials, email: e.target.value }) }}
@@ -122,7 +122,7 @@ export default function Signup() {
                     type={passwordVisible ? "text" : "password"}
                     sx={{
                         backgroundColor: 'white', borderRadius: '0.3rem',
-                        width: '20rem', maxWidth: '100%'
+                        width: '30rem', maxWidth: '100%'
                     }}
                     onClick={() => { setSpan({ ...span, passwordSpan: '' }) }}
                     onChange={(e) => { setCredentials({ ...credentials, password: e.target.value }) }}
@@ -146,7 +146,7 @@ export default function Signup() {
                     type={confrnPasswordVisible ? "text" : "password"}
                     sx={{
                         backgroundColor: 'white', borderRadius: '0.3rem',
-                        width: '20rem', maxWidth: '100%'
+                        width: '30rem', maxWidth: '100%'
                     }}
                     onClick={() => { setSpan({ ...span, confrmPassword: '' }) }}
                     onChange={(e) => { setCredentials({ ...credentials, confrmPassword: e.target.value }) }}
