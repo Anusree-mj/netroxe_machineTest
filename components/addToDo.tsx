@@ -90,7 +90,7 @@ const AddToDo = () => {
                         width: { xs: '30rem', md: '20rem' }, maxWidth: '100%'
                     }}
                     helperText={toDoSpan.descriptionSpan}
-                    onClick={() => { setTodoSpan({ ...toDoSpan, taskSpan: '' }) }}
+                    onClick={() => { setTodoSpan({ ...toDoSpan, descriptionSpan: '' }) }}
                     onChange={(e) => { setTodo({ ...toDo, description: e.target.value }) }}
                 ></TextField>
                 <LoadingButton
