@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { connectToMongoDB } from '@/libs/connectDB';
 import Todo from '@/models/todo';
 
-
+// add
 export async function POST(req: Request) {
     await connectToMongoDB();
     try {
@@ -31,5 +31,56 @@ export async function POST(req: Request) {
     } catch (error) {
         console.error(error);
         return NextResponse.json({ status: 'nok', message: 'Unexpected error occured' }, { status: 500 });
+    }
+}
+// delete
+export async function DELETE(req: Request) {
+    await connectToMongoDB();
+    try {
+        const { userId, task } = await req.json();
+        console.log('useriddddd', userId);
+        
+        let todo = await Todo.findOne({ userId: userId });
+        
+        if (todo) {
+            todo.todos = todo.todos.filter(todoItem => todoItem.task !== task);
+            
+            todo.totalTodo = todo.todos.length;
+            
+            await todo.save();
+            
+            return NextResponse.json({ status: 'ok' });
+        } else {
+            return NextResponse.json({ status: 'nok', message: 'Todo not found' }, { status: 404 });
+        }
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({ status: 'nok', message: 'Unexpected error occurred' }, { status: 500 });
+    }
+}
+// edit complete
+export async function PATCH(req: Request) {
+    await connectToMongoDB();
+    try {
+        const { userId, task } = await req.json();
+        console.log('useriddddd', userId);
+        
+        const todo = await Todo.findOne({ userId: userId });
+
+        if (todo) {
+            const todoItem = todo.todos.find(item => item.task === task);
+            if (todoItem) {
+                todoItem.isCompleted = !todoItem.isCompleted; 
+                await todo.save(); 
+                return NextResponse.json({ status: 'ok' });
+            } else {
+                return NextResponse.json({ status: 'nok', message: 'Todo item not found' }, { status: 404 });
+            }
+        } else {
+            return NextResponse.json({ status: 'nok', message: 'Todo document not found' }, { status: 404 });
+        }
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({ status: 'nok', message: 'Unexpected error occurred' }, { status: 500 });
     }
 }

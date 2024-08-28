@@ -18,7 +18,7 @@ export const todoSlice: any = createSlice({
     name: "user",
     initialState: initialState,
     reducers: {
-        // get user details
+        // get todo details
         addTodoAction: (state) => {
             state.isLoading = true;
         },

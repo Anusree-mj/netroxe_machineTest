@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTodoAction, todoStateType } from "@/store/toDoReducer";
 import { TodosItem } from "@/store/type";
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import { apiCall } from "@/services/api";
+import { toast } from "react-toastify";
 
 const TodoManagement = () => {
     const userContext = useContext(UserContext);
@@ -27,6 +30,41 @@ const TodoManagement = () => {
             dispatch(getTodoAction({ userId }))
         }
     }, [userId])
+
+    const handleDelete = async (task: string) => {
+        try {
+            const data = { task, userId }
+            const response = await apiCall({
+                method: 'DELETE',
+                endpoint: 'todo',
+                body: data
+            });
+            if (response.status === 'ok') {
+                dispatch(getTodoAction({ userId }))
+            }
+        } catch (error) {
+            toast.error('Unexpected error occured')
+            console.error('Error deleting todo:', error);
+        }
+    }
+
+    const handleComplete = async (task: string) => {
+        try {
+            const data = { task, userId }
+            const response = await apiCall({
+                method: 'PATCH',
+                endpoint: 'todo',
+                body: data
+            });
+            if (response.status === 'ok') {
+                dispatch(getTodoAction({ userId }))
+            }
+        } catch (error) {
+            toast.error('Unexpected error occured')
+            console.error('Error deleting todo:', error);
+        }
+    }
+
     return (
         <Box sx={{
             background: 'linear-gradient(to right, #3d3f42, #212226)',
@@ -46,7 +84,9 @@ const TodoManagement = () => {
                     <Box sx={{
                         display: 'flex', gap: 2
                     }}>
-                        <Typography sx={{ color: 'white' }}>{`Tasks (${todoList[0]?.totalTodo})`}</Typography>
+                        <Typography sx={{ color: 'white' }}>
+                            {`Tasks (${todoList.length > 0 ? todoList[0]?.totalTodo ?? 0 : 0})`}
+                        </Typography>
                         <Typography sx={{ color: '#ffffff87' }}>Today</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', gap: 1 }}>
@@ -69,6 +109,7 @@ const TodoManagement = () => {
                                 <Checkbox
                                     sx={{ color: 'white' }}
                                     checked={item.isCompleted}
+                                    onClick={() => { handleComplete(item.task) }}
                                 />
                                 <Box sx={{
                                     display: 'flex',
@@ -78,7 +119,11 @@ const TodoManagement = () => {
                                     <Typography sx={{ color: '#ffffff87' }}>{item.description}</Typography>
                                 </Box>
                             </Box>
-                            <CreateOutlinedIcon sx={{ color: '#ffffff87' }} />
+                            <Box sx={{ gap: 1, display: 'flex' }}>
+                                <CreateOutlinedIcon sx={{ color: '#ffffff87', cursor: 'pointer', width: '1.1rem' }} />
+                                <CloseOutlinedIcon onClick={() => { handleDelete(item.task) }}
+                                    sx={{ color: '#ffffff87', width: '1.1rem', cursor: 'pointer' }} />
+                            </Box>
                         </Box>
                     </Box>
 
