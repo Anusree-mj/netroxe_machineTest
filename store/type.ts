@@ -5,3 +5,11 @@ export interface UserItem {
     password: string;
 }
 
+export interface ToDoItem {
+    _id: string;
+    userId: string;
+    task: string;
+    description: string;
+    isCompleted: boolean
+}
+

@@ -15,9 +15,9 @@ export async function POST(req: Request) {
     try {
         const { name, email, password } = await req.json();
         console.log('Reached API with', { name, email, password });
-        const user= await User.findOne({email:email})
-        if(user){
-            return NextResponse.json({ status: 'nok', message: 'Email already found' },{ status: 401 });
+        const user = await User.findOne({ email: email })
+        if (user) {
+            return NextResponse.json({ status: 'nok', message: 'Email already found' }, { status: 401 });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -38,9 +38,9 @@ export async function POST(req: Request) {
             maxAge: 60 * 60 * 24 * 7,
             path: '/',
         }));
-        return NextResponse.json({ status: 'ok', user: { name, email } }, { headers });
+        return NextResponse.json({ status: 'ok', user: { _id: newUser._id, name, email } }, { headers });
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ status: 'nok', message: error }, { status: 500 });
+        return NextResponse.json({ status: 'nok',  message: 'Unexpected error occured' }, { status: 500 });
     }
 }

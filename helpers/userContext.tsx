@@ -19,7 +19,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         } else {
             try {
                 const parsedData = JSON.parse(userData);
-                const id = parsedData.id;
+                const id = parsedData._id;
                 setUserId(id);
             } catch (error) {
                 console.error('Failed to parse user data', error);
