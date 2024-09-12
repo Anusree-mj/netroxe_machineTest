@@ -36,7 +36,7 @@ const Header = () => {
             boxShadow:
             'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
         }}>
-            <Typography>Dashboard</Typography>
+            <Typography sx={{color: 'white'}}>Dashboard</Typography>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <IconButton onClick={handleMenuClick} sx={{ p: 0 }}>
                     <Avatar src="/profile.jpg" alt="Profile Image" sx={{ width: 35, height: 35 }} />
